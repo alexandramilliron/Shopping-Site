@@ -94,11 +94,10 @@ def show_shopping_cart():
         melon_cost = float(count) * melon.price
         order_total = order_total + melon_cost
         melon.qty = count 
-        melon.melon_cost = melon_cost 
+        melon.melon_cost = f"${melon_cost:.2f}"
         melon_objects.append(melon)
-    
-                
-    return render_template("cart.html", melons=melon_objects, total=order_total)
+            
+    return render_template("cart.html", melons=melon_objects, total=f"${order_total:.2f}")
 
 
 @app.route("/add_to_cart/<melon_id>")
