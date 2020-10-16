@@ -80,18 +80,25 @@ def show_shopping_cart():
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
     
+    if "cart" not in session:
+        session["cart"] = {}
+    
+    cartdict = session["cart"]
 
     melon_objects = []
 
-    total = 0
+    order_total = 0
 
-
-
-
-    for melon_id, count in session["cart"].items():
-        
-            
-    return render_template("cart.html")
+    for melon_id, count in cartdict.items():
+        melon = melons.get_by_id(melon_id)
+        melon_cost = float(count) * melon.price
+        order_total = order_total + melon_cost
+        melon.qty = count 
+        melon.melon_cost = melon_cost 
+        melon_objects.append(melon)
+    
+                
+    return render_template("cart.html", melons=melon_objects, total=order_total)
 
 
 @app.route("/add_to_cart/<melon_id>")
@@ -154,6 +161,8 @@ def process_login():
     #   message and redirect the user to the "/melons" route
     # - if they don't, flash a failure message and redirect back to "/login"
     # - do the same if a Customer with that email doesn't exist
+
+    
 
     return "Oops! This needs to be implemented"
 
